@@ -124,7 +124,7 @@ for x,aa in enumerate(atoms1):
 		atoms1 = atoms1[:x]+(psi(atoms1[x:],angles[x][1]))
 
 
-file = open("1L2Y-F.pdb","w") #Opens the output file
+file = open("1L2Y-P.pdb","w") #Opens the output file
 
 for aa in atoms1:
 	for atom in aa:

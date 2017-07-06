@@ -139,7 +139,7 @@ def rotatephipsi(atoms,angles):
 			atoms = atoms[:x]+(psi(atoms[x:],angles[x][1]))
 	return atoms
 
-file1=PDB_read("NLYIQWLKDGGPSSGRPPPS.pdb") 
+file1=PDB_read("1L2Y-P.pdb") 
 
 atoms1 = file1.getAtomsAA() # GET THE INFORMATIONS OF ALL ATOMS AS A LIST
 atoms2 = PDB_read("1l2y.pdb").getAtomsAA() # GET THE INFORMATIONS OF ALL ATOMS AS A LIST
@@ -172,9 +172,8 @@ sm = SimAnne(tam,[0.0]*tam,[360.0]*tam) # STARTS THE METAHEURISTICS
 ang = createAngles() #INITIAL SOLUTION
 
 atoms1 = rotatephipsi(atoms1,ang) # ROTATE PHI AND PSI WITH THE FIRST SOLUTION
-#atoms1 = withoutAA(atoms1)
-#atoms1 = file1.getCoord(atoms1)
-print "oi"
+
+
 best = s0
 bestst = atoms1
 bestn = 0
@@ -182,7 +181,7 @@ n = 0
 m = []
 p = []
 while sm.getTemperature() > 1:
-	iterations = 10
+	iterations = 20
 	while iterations > 0:
 		ang = createAngles()
 		newTransRot = rotatephipsi(atoms1,ang)
@@ -196,7 +195,7 @@ while sm.getTemperature() > 1:
 				best = s0
 				bestst = atoms1
 				bestn = sm.getTemperature()
-		elif sm.getProbability(s1,s0,sm.getTemperature()) > random.uniform(0.0, 1.0):
+		elif sm.getProbability(s0,s1,sm.getTemperature()) > random.uniform(0.0, 1.0):
 			s0 = s1
 			atoms1 = AAsetter(newTransRot,tam)
 		iterations -= 1
@@ -206,7 +205,7 @@ while sm.getTemperature() > 1:
 	sm.updateTemperature()
 
 
-file = open("testo.pdb","w") #Opens the output file
+file = open("1L2Y-F.pdb","w") #Opens the output file
 
 for aa in bestst:
 	for atom in aa:
@@ -220,10 +219,10 @@ file.write("TER")
 file.close()
 
 plt.plot(m,p)
-plt.xlim(len(m), 0)  # decreasing time
+#plt.xlim(len(m), 0)  # decreasing time
 
-plt.xlabel('RMSD')
-plt.ylabel('Temperature')
-plt.title('YGGFM; Best RMSD: '+str(best))
-plt.savefig('destination_path.eps', format='eps', dpi=1000)
+plt.ylabel('RMSD')
+plt.xlabel('Iterations')
+plt.title('1L2Y-P; Best RMSD: '+str(best))
+plt.savefig('1L2Y-F.eps', format='eps', dpi=1000)
 plt.show()
