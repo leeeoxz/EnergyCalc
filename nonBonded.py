@@ -12,6 +12,7 @@ class itpRead ():
 	content = [] #CONTENT OF FILE
 	titles = [] #TITLES
 	columnNames = [] #COUMN NAMES
+	dictionary = {} #ATOMS DICTIONARY dic[ATOM1ATOM2]:{EPSLON I J,R MIN I, R MIN J, R MIN IJ}
 
 	def __init__(self,FileName):
 		file = open(FileName,"r")
@@ -25,7 +26,8 @@ class itpRead ():
 				self.columnNames.append(line)
 			else:
 				break
-		print self.content
+		self.createDic()
+		print self.dictionary
 
 	def epslonIJ(self,epsi,epsj): # GETS EPSLON I AND J
 		eij= math.sqrt(epsi*epsj)
@@ -47,5 +49,20 @@ class itpRead ():
 		u = epsij*(((rminij/rij)**12)-(2*((rminij/rij)**6)))
 		return u
 
+	def getEpslonOne(self):
+		e = 9*(10e9)*((1.6022*10e-19)/10e-9)*((6.022140857*10e23)/1000)
+		return e
+
+	def createDic(self):
+		for x,item in enumerate(self.content):
+			for y,item1 in enumerate(self.content[x:]):
+				epsIJ = self.epslonIJ(float(item[6]),float(item1[6]))
+				rmini = self.rmin(float(item[5]))
+				rminj = self.rmin(float(item1[5]))
+				rminij = self.rminIJ(rmini,rminj)
+				self.dictionary[item[0]+item1[0]] =[epsIJ,rmini,rminj,rminij]
+
+	def.getDic(self):
+		return copy.deepcopy(self.dictionary)
 
 itpRead("ffnonbonded.itp")
