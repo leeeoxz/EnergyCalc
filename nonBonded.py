@@ -27,7 +27,6 @@ class itpRead ():
 			else:
 				break
 		self.createDic()
-		print self.dictionary
 
 	def epslonIJ(self,epsi,epsj): # GETS EPSLON I AND J
 		eij= math.sqrt(epsi*epsj)
@@ -62,7 +61,5 @@ class itpRead ():
 				rminij = self.rminIJ(rmini,rminj)
 				self.dictionary[item[0]+item1[0]] =[epsIJ,rmini,rminj,rminij]
 
-	def.getDic(self):
+	def getDic(self):
 		return copy.deepcopy(self.dictionary)
-
-itpRead("ffnonbonded.itp")
